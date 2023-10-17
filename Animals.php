@@ -1,6 +1,7 @@
 <?php
-class Animal
-{
+class Animal{
+    public $animals;
+    
     public function __construct($data)
     {
         $this->animals = $data;
@@ -9,7 +10,7 @@ class Animal
     public function index()
     {
         if (count($this->animals) === 0) {
-            echo "Belom ada hewan yang dimasukkanj<br>";
+            echo "Belom ada hewan yang dimasukkan<br>";
         } else {
             foreach ($this->animals as $animal) {
                 echo "- $animal <br>";
@@ -19,7 +20,7 @@ class Animal
 
     public function store($data)
     {
-        $this->animals[] = $data;
+        array_push($this->animals,$data);
     }
 
     public function update($index, $data)
@@ -27,7 +28,7 @@ class Animal
         if (isset($this->animals[$index])) {
             $this->animals[$index] = $data;
         } else {
-            echo "Indeks tidak valid. Tidak dapat mengupdate hewan.<br>";
+            echo "Tidak dapat mengupdate hewan.<br>";
         }
     }
 
@@ -38,7 +39,7 @@ class Animal
             unset($this->animals[$index]);
             $this->animals = array_values($this->animals);
         } else {
-            echo "Indeks tidak valid. Tidak dapat menghapus hewan.<br>";
+            echo "Tidak dapat menghapus hewan.<br>";
         }
     }
 }
