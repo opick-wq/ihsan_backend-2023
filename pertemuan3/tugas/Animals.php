@@ -1,6 +1,6 @@
 <?php
 class Animal{
-    public $animals;
+    protected $animals;
     
     public function __construct($data)
     {
