@@ -14,6 +14,11 @@ class StudentController extends Controller
     {
         $students = Student::all();
 
+        if($students->isEmpty()){
+        
+        return response()->json($data, 204);
+        }
+
         $data =[
         'message' => 'Get all students',
         'data'=> $students ];
@@ -34,6 +39,13 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            "nama" => "required",
+            "nim" => "required",
+            "email" => "required|email",
+            "jurusan" => "required"
+        ]);
+
         $input = [
         'nama'=>$request->nama,
         'nim' =>$request->nim,
@@ -133,7 +145,7 @@ class StudentController extends Controller
             'message' => 'student not found'
         ];
     
-        return response()->json($data, 401);
+        return response()->json($data, 404);
         }
     }
 }
