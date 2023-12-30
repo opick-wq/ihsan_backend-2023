@@ -25,17 +25,46 @@ class Student {
    * Method menerima parameter data yang akan diinsert.
    * Method mengembalikan data student yang baru diinsert.
    */
-  static create(data) {
-    data.created_at = new Date();
-    data.updated_at = new Date();
+  static  async create(data, callback) {
+    const id = await new Promise((resolve, reject) => {
+      const sql = "INSERT INTO students SET  ?";
+      db.query(sql, data,(err, results) => {
+          resolve(results.insertId);
+      });
+    });
+
+    const student = this.find(id);
+    return student;
+  }
+
+
+  static find(id) {
     return new Promise((resolve, reject) => {
-      const sql = "INSERT INTO students SET ?";
-      db.query(sql, data, (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
+      const sql = "SELECT * FROM students WHERE id = ?";
+      db.query(sql, id, (err, result) => {
+        const  [students] = result;
+        resolve(result);
+      });
+    });
+  }
+
+  static async update(id, data) {
+    await new Promise((resolve, reject) => {
+      const sql = "UPDATE students SET ? WHERE id = ?";
+      db.query(sql, [data, id], (err, result) => {
+        resolve(result);
+      });
+    });
+
+    const students = await this.find(id);
+    return students;
+  }
+
+  static delete(id) {
+    return new Promise((resolve, reject) => {
+      const sql = "DELETE FROM students WHERE id = ?";
+      db.query(sql, id, (err, results) => {
+        resolve(results);
       });
     });
   }
